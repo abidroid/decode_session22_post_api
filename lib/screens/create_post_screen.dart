@@ -1,4 +1,6 @@
+import 'package:decode_session22_post_api/blocs/post_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -50,8 +52,44 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               height: 16,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                String title = titleC.text.trim();
+                String body = bodyC.text.trim();
+
+                context
+                    .read<PostBloc>()
+                    .add(SubmitPostEvent(postTitle: title, postBody: body));
+              },
               child: const Text('Submit Post'),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            BlocBuilder<PostBloc, PostState>(
+              builder: (context, state) {
+                if (state is PostSubmittingState) {
+                  return const CircularProgressIndicator();
+                }
+
+                if (state is PostSubmitErrorState) {
+                  return Text(state.errorMessage);
+                }
+
+                if (state is PostSubmittedState) {
+                  return Card(
+                    child: Column(
+                      children: [
+                        Text(state.postModel.title!),
+                        Text(state.postModel.body!),
+                        Text('ID: ${state.postModel.id!}'),
+                        Text('User ID: ${state.postModel.userId!}'),
+                      ],
+                    ),
+                  );
+                }
+
+                return const FlutterLogo();
+              },
             ),
           ],
         ),

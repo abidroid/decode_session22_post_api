@@ -13,7 +13,7 @@ class PostRepository {
     Map<String, dynamic> body = {
       'title': postTitle,
       'body': postBody,
-      'userId': 1,
+      'userId': '1',
     };
 
     http.Response response = await http.post(Uri.parse(url), body: body);
@@ -21,6 +21,7 @@ class PostRepository {
     if( response.statusCode == 200 || response.statusCode == 201 ) {
 
       var jsonResponse = jsonDecode(response.body);
+      print(response.statusCode);
       print(jsonResponse);
 
       PostModel postModel = PostModel.fromJson(jsonResponse);
