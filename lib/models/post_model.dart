@@ -6,6 +6,7 @@ class PostModel {
 
   PostModel({this.userId, this.id, this.title, this.body});
 
+  // named constructor
   PostModel.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
     id = json['id'];
